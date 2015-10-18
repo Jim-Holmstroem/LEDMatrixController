@@ -46,13 +46,13 @@ writeBit data_ position = do
 writeByte :: Word8 -> Arduino ()
 writeByte data_ = do
   digitalWrite csPin False
-  mapM_ (writeBit data_) $ reverse cols
+  mapM_ (writeBit data_) $ reverse cols  -- TODO inner function of writeBit since it only makes sensse inside
   -- digitalWrite csPin True  ??
 
 writeRaw :: Word8 -> Word8 -> Arduino ()
 writeRaw address data_ = do
     digitalWrite csPin True
-    writeByte address
+    writeByte address  -- TODO inner function of writeByte since it only makes sense inside
     writeByte data_
     digitalWrite csPin False
 
@@ -60,7 +60,7 @@ arduino :: String -> Arduino ()
 arduino usb = withArduino True usb $ do
     init
     clear
-    whiletrue loop
+    whiletrue loop  -- TODO interface to react on?
 
 main = do
     (usb:_) = getArgs
