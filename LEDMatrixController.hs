@@ -36,7 +36,7 @@ initMatrix = do
 
 clearMatrix :: Arduino ()
 clearMatrix = do
-    mapM_ (flip writeRaw 0x00.(+1)) rows
+    mapM_ (flip writeRaw 0xaa.(+1)) rows
 
 writeBit :: Word8 -> Word8 -> Arduino ()
 writeBit data_ position = do
@@ -50,6 +50,7 @@ writeByte data_ = do
 
 writeRaw :: Word8 -> Word8 -> Arduino ()
 writeRaw address data_ = do
+    delay 10
     digitalWrite csPin False
     writeByte address  -- TODO inner function of writeByte since it only makes sense inside
     writeByte data_
