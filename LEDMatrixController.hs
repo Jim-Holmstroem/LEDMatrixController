@@ -1,13 +1,14 @@
 import Data.Bits (testBit)
+import Data.Word (Word8)
 
 import System.Hardware.Arduino
 import System.Environment (getArgs)
 
 
-rows :: [Int]
+rows :: [Word8]
 rows = [0..7]
 
-cols :: [Int]
+cols :: [Word8]
 cols = [0..7]
 
 dinPin :: Pin
@@ -19,12 +20,14 @@ csPin = pin 9
 clkPin :: Pin
 clkPin = pin 10
 
-init :: Arduino ()
-init = do
+initMatrix :: Arduino ()
+initMatrix = do
     setPinMode clkPin OUTPUT
     setPinMode csPin OUTPUT
     setPinMode dinPin OUTPUT
 
+    setPinMode (pin 6) OUTPUT
+    digitalWrite (pin 6) False
     delay 50
 
     writeRaw 0x09 0x00
@@ -32,22 +35,21 @@ init = do
     writeRaw 0x0b 0x07
     writeRaw 0x0c 0x01
     writeRaw 0x0f 0x00
+    digitalWrite (pin 6) True
 
-clear :: Arduino ()
-clear = do
+clearMatrix :: Arduino ()
+clearMatrix = do
     mapM_ (flip writeRaw 0x00) rows
 
 writeBit :: Word8 -> Word8 -> Arduino ()
 writeBit data_ position = do
     digitalWrite clkPin False
-    digitalWrite dinPin $ testBit data_ position
+    digitalWrite dinPin $ testBit data_ $ fromIntegral position
     digitalWrite clkPin True
 
 writeByte :: Word8 -> Arduino ()
 writeByte data_ = do
-  digitalWrite csPin False
   mapM_ (writeBit data_) $ reverse cols  -- TODO inner function of writeBit since it only makes sensse inside
-  -- digitalWrite csPin True  ??
 
 writeRaw :: Word8 -> Word8 -> Arduino ()
 writeRaw address data_ = do
@@ -56,12 +58,11 @@ writeRaw address data_ = do
     writeByte data_
     digitalWrite csPin False
 
-arduino :: String -> Arduino ()
+arduino :: String -> IO ()
 arduino usb = withArduino True usb $ do
-    init
-    clear
-    whiletrue loop  -- TODO interface to react on?
+    initMatrix
+    clearMatrix
 
 main = do
-    (usb:_) = getArgs
+    (usb:_) <- getArgs
     arduino usb
