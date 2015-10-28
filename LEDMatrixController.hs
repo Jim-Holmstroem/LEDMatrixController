@@ -26,8 +26,6 @@ initMatrix = do
     setPinMode csPin OUTPUT
     setPinMode dinPin OUTPUT
 
-    setPinMode (pin 6) OUTPUT
-    digitalWrite (pin 6) False
     delay 50
 
     writeRaw 0x09 0x00
@@ -35,11 +33,10 @@ initMatrix = do
     writeRaw 0x0b 0x07
     writeRaw 0x0c 0x01
     writeRaw 0x0f 0x00
-    digitalWrite (pin 6) True
 
 clearMatrix :: Arduino ()
 clearMatrix = do
-    mapM_ (flip writeRaw 0x00) rows
+    mapM_ (flip writeRaw 0x00.(+1)) rows
 
 writeBit :: Word8 -> Word8 -> Arduino ()
 writeBit data_ position = do
@@ -53,15 +50,21 @@ writeByte data_ = do
 
 writeRaw :: Word8 -> Word8 -> Arduino ()
 writeRaw address data_ = do
-    digitalWrite csPin True
+    digitalWrite csPin False
     writeByte address  -- TODO inner function of writeByte since it only makes sense inside
     writeByte data_
-    digitalWrite csPin False
+    digitalWrite csPin True
 
 arduino :: String -> IO ()
 arduino usb = withArduino True usb $ do
+    setPinMode (pin 6) OUTPUT
+    digitalWrite (pin 6) False
+
     initMatrix
+    digitalWrite (pin 6) True
     clearMatrix
+    digitalWrite (pin 6) False
+
 
 main = do
     (usb:_) <- getArgs
