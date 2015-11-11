@@ -11,7 +11,7 @@ ghc --make LEDMatrixController.hs
 This experiment did not work as expected for some reason so I have abandon it for now.
 With Arduino Nano v3.1 it works great for a second then it hangs for about 5 seconds and repeats.
 With Arduino Uno it is really slow between each setting of rows, it takes 5 seconds for each row.
-I'm guessing it has to do with some timeout of the communication (which happens to be 5 seconds)
+I'm guessing it has to do with some a timeout which happens to be 5 seconds just as the lag.
 
 
 Summary: it's useless in this state.
