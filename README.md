@@ -14,7 +14,7 @@ With Arduino Uno it is really slow between each setting of rows, it takes 5 seco
 I'm guessing it has to do with some a timeout which happens to be 5 seconds just as the lag.
 
 
-Summary: it's useless in this state.
+Summary: it's useless in this state (and Firmata is most probably not intended to be used this way), but I have learnt alot.
 
 ## Related to
 https://github.com/Jim-Holmstroem/LEDMatrixCounter
