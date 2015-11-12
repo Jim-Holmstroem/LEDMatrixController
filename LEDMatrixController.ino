@@ -57,7 +57,13 @@ void loop() {
       on = Serial.parseInt();
       value |= on << i;
     }
-    Write_Max7219(row+1, value);
+    if(row+1 < 8) {
+      Write_Max7219(row+1, value);
+    } else {
+      Serial.print(row, DEC);
+      Serial.print(" ");
+      Serial.println("is out of range as row, no-operation");
+    }
     if (Serial.read() == '\n') {
       Serial.print(row, DEC);
       Serial.print(" ");
