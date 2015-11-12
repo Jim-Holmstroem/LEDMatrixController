@@ -35,9 +35,14 @@ see http://playground.arduino.cc/Interfacing/LinuxTTY on how to send data over U
 
 For me this worked (where /dev/ttyACM0 is the USB):
 ```
-stty -F /dev/ttyACM0 115200 cs8 cread clocal  # settings
-tail -f /dev/ttyACM0   # in a seperate window to recieve data
+stty -F /dev/ttyACM0 115200 cs8  # settings
 echo -ne "1 1 1 1 0 0 0 1 0\n" > /dev/ttyACM0
 ```
+
+## Non-trivial Example
+```
+python waveexample.py > /dev//ttyACM0
+```
+
 ## Related to
 https://github.com/Jim-Holmstroem/LEDMatrixCounter

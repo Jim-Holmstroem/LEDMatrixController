@@ -5,7 +5,7 @@ int Max7219_pinDIN = 8;
 
 void Write_Max7219_byte(unsigned char data) {
   unsigned char i;
-  digitalWrite(Max7219_pinCS, LOW);    
+  digitalWrite(Max7219_pinCS, LOW);
   for(i=8;i>=1;i--) {
     digitalWrite(Max7219_pinCLK, LOW);
     digitalWrite(Max7219_pinDIN, data & 0x80);// Extracting a bit data
@@ -18,14 +18,14 @@ void Write_Max7219_byte(unsigned char data) {
 void Write_Max7219(unsigned char address, unsigned char data) {
   digitalWrite(Max7219_pinCS, LOW);
   Write_Max7219_byte(address);           //addressï¼Œcode of LED
-  Write_Max7219_byte(data);               //dataï¼Œfigure on LED 
+  Write_Max7219_byte(data);               //dataï¼Œfigure on LED
   digitalWrite(Max7219_pinCS, HIGH);
 }
 
 
 void Init_MAX7219(void) {
   Write_Max7219(0x09, 0x00);       //decoding ï¼šBCD
-  Write_Max7219(0x0a, 0x01);       //brightness 
+  Write_Max7219(0x0a, 0x01);       //brightness
   Write_Max7219(0x0b, 0x07);       //scanlimitï¼›8 LEDs
   Write_Max7219(0x0c, 0x01);       //power-down modeï¼š0ï¼Œnormal modeï¼š1
   Write_Max7219(0x0f, 0x00);       //test displayï¼š1ï¼›EOTï¼Œdisplayï¼š0
@@ -57,17 +57,11 @@ void loop() {
       on = Serial.parseInt();
       value |= on << i;
     }
-    if(row+1 < 8) {
+    if (row < 8) {
       Write_Max7219(row+1, value);
     } else {
-      Serial.print(row, DEC);
-      Serial.print(" ");
-      Serial.println("is out of range as row, no-operation");
     }
     if (Serial.read() == '\n') {
-      Serial.print(row, DEC);
-      Serial.print(" ");
-      Serial.println(value, DEC);
     }
   }
 }
