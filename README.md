@@ -1,5 +1,7 @@
 # LEDMatrixController
 Connect the LED Matrix kit https://www.sparkfun.com/products/11861 by the instructions for it.
+
+The StandardFirmata version didn't work that good (perhaps due to a missconfiguration of the serialport?). Recommend using the custom serial communication (further down) instead.
 Upload StandardFirmata code to the arduino using Arduino IDE and compile and run as below
 
 ```bash
