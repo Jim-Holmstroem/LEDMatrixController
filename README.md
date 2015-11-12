@@ -16,5 +16,28 @@ I'm guessing it has to do with some a timeout which happens to be 5 seconds just
 
 Summary: it's useless in this state (and Firmata is most probably not intended to be used this way), but I have learnt alot.
 
+
+# Costum serial communication
+LEDMatrixController.ino
+
+Send
+```
+<row> <led-on-0> <led-on-1> <led-on-2> <led-on-3> <led-on-4> <led-on-5> <led-on-6> <led-on-7>
+```
+to the connected serial with baudrate 115200.
+Example to update the leds on row 3, send: 3 1 1 0 0 1 1 0 0
+The serial port will respond with
+```
+<row> <integer-representation-of-leds>
+```
+
+see http://playground.arduino.cc/Interfacing/LinuxTTY on how to send data over USB.
+
+For me this worked (where /dev/ttyACM0 is the USB):
+```
+stty -F /dev/ttyACM0 115200 cs8 cread clocal  # settings
+tail -f /dev/ttyACM0   # in a seperate window to recieve data
+echo -ne "1 1 1 1 0 0 0 1 0\n" > /dev/ttyACM0
+```
 ## Related to
 https://github.com/Jim-Holmstroem/LEDMatrixCounter
