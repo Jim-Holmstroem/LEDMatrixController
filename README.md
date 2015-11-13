@@ -19,7 +19,7 @@ I'm guessing it has to do with some a timeout which happens to be 5 seconds just
 Summary: it's useless in this state (and Firmata is most probably not intended to be used this way), but I have learnt alot.
 
 
-# Costum serial communication
+# Custom serial communication
 LEDMatrixController.ino
 
 Send
